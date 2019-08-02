@@ -1,0 +1,32 @@
+#!/usr/bin/expect -f
+
+##
+#
+# Title:		RPC2 Trap Configurator
+# Description:  Create SNMP v1/v2c Trap Entry
+# Version:		0.1
+# Contributors:	scott.donaldson@vertiv.com
+# Usage:		n/a
+# Inputs:
+#	RPC2_AUTH_USERNAME
+#	RPC2_AUTH_PASS
+#	RPC2_SYSTEM_NTPSERVER		- STRING IPv4/IPv6 Address
+#	RPC2_SYSTEM_NTPPOLL			- STRING [hourly|daily]
+#	RPC2_SYSTEM_TIMEZONE		- INT 0..92 (see. timezone.txt)
+#
+set ip [lindex $argv 0]
+set timeout 10
+spawn ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -l $env(RPC2_AUTH_USERNAME) $ip
+expect "*assword:"
+send "$env(RPC2_AUTH_PASS)\r"
+expect "SUCCESS"
+expect "cli-> "
+send "time zone $env(RPC2_SYSTEM_TIMEZONE)\r"
+expect "cli-> "
+send "time source ntp_server\r"
+expect "cli-> "
+send "time ntp server $env(RPC2_SYSTEM_NTPSERVER)\r"
+expect "cli-> "
+send "time ntp rate $env(RPC2_SYSTEM_NTPPOLL)\r"
+expect "cli-> "
+expect eof

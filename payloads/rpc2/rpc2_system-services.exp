@@ -1,0 +1,31 @@
+#!/usr/bin/expect -f
+
+##
+#
+# Title:		RPC2 Trap Configurator
+# Description:  Create SNMP v1/v2c Trap Entry
+# Version:		0.1
+# Authors: 		scott.donaldson@vertiv.com
+# Usage:		n/a
+# Inputs:
+#	RPC2_AUTH_USERNAME
+#	RPC2_AUTH_PASS
+#	RPC2_SYSTEM_WEBSERVER 		- STRING [enable|disable]
+#	RPC2_SYSTEM_VELOCITY		- STRING [enable|disable]
+#	RPC2_SYSTEM_SNMP 			- STRING [enable|disable]
+#
+set ip [lindex $argv 0]
+set timeout 10
+spawn ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -l $env(RPC2_AUTH_USERNAME) $ip
+expect "*assword:"
+send "$env(RPC2_AUTH_PASS)\r"
+expect "SUCCESS"
+expect "cli-> "
+send "system webserver $env(RPC2_SYSTEM_WEBSERVER)\r"
+expect "cli-> "
+send "system velocity $env(RPC2_SYSTEM_VELOCITY)\r"
+expect "cli-> "
+send "system snmp $env(RPC2_SYSTEM_SNMP)\r"
+expect "cli->"
+
+expect eof

@@ -1,0 +1,15 @@
+# The following need to be added to Jira
+- Add logs folder validation
+- Add output folder validation
+- Add scripts folder validation
+- Add scripts execution rights validation
+- Add dependency checks function (iputils, expect, dialog)
+- Add JSON output processor for expect output
+- Implement parallel expect spawning
+- Add input FQDN validation inc. DNS lookup
+- Add input IPv6 validation
+- Add input IPv4 validation
+- Add environment config to override defaults
+- Add prompt for IP range in absence target file
+- Add taret validation of SSH service
+- Add MAC filter using ARP table to filter only Vertiv vendor codes

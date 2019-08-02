@@ -1,0 +1,33 @@
+#!/usr/bin/expect -f
+
+##
+#
+# Title:		RPC2 Trap Configurator
+# Description:  Create SNMP v1/v2c Trap Entry
+# Version:		0.1
+# Authors: 		scott.donaldson@vertiv.com
+# Usage:		n/a
+# Inputs:
+#	RPC2_AUTH_USERNAME
+#	RPC2_AUTH_PASS
+#	RPC2_COMMUNITY_ENTRY 		- INT 1..20
+#	RPC2_COMMUNITY_NETWORK 		- IPv4 / IPv6 Address
+#	RPC2_SNMP_COMMUNITY 		- STRING
+#	RPC2_SNMP_COMMUNITY_MODE 	- STRING [Read|Write]
+#
+set ip [lindex $argv 0]
+set timeout 10
+spawn ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -l $env(RPC2_AUTH_USERNAME) $ip
+expect "*assword:"
+send "$env(RPC2_AUTH_PASS)\r"
+expect "SUCCESS"
+expect "cli-> "
+
+send "snmp v1v2 access community $env(RPC2_COMMUNITY_ENTRY) $env(RPC2_SNMP_COMMUNITY_RO)\r"
+expect "cli->"
+send "snmp v1v2 access mode $env(RPC2_COMMUNITY_ENTRY) $env(RPC2_SNMP_COMMUNITY_MODE)\r"
+expect "cli->"
+send "snmp v1v2 access networkname $env(RPC2_COMMUNITY_ENTRY) $env(RPC2_COMMUNITY_NETWORK)\r"
+expect "cli->"
+
+expect eof

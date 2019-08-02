@@ -1,0 +1,92 @@
+#!/usr/bin/expect -f
+
+##
+#
+# Title:		RPC2 Device Info
+# Description:  Query device properties.
+# Version:		0.1
+# Authors: 		scott.donaldson@vertiv.com
+# Usage:		n/a
+# Inputs:
+#	RPC2_AUTH_USERNAME
+#	RPC2_AUTH_PASS
+#
+# Examples:
+#	./rpc2_info.exp 192.168.1.158 | grep -v "cli->" > /tmp/192-168-1-158.txt
+#
+
+set ip [lindex $argv 0]
+set timeout 10
+spawn ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -l $env(RPC2_AUTH_USERNAME) $ip
+expect "*assword:"
+send "$env(RPC2_AUTH_PASS)\r"
+expect "SUCCESS"
+expect "cli->"
+
+# Device Details
+send "label\r"
+expect "cli->"
+send "system name\r"
+expect "cli->"
+send "sysinfo model\r"
+expect "cli->"
+send "sysinfo version\r"
+expect "cli->"
+send "sysinfo serialnumber\r"
+expect "cli->"
+send "system location\r"
+expect "cli->"
+send "label pdu\r"
+expect "cli->"
+send "status\r"
+expect "cli->"
+
+# Network Details
+send "network\r"
+expect "cli->"
+send "network hostname\r"
+expect "cli->"
+send "network ipv4\r"
+expect "cli->"
+send "network ipv6\r"
+expect "cli->"
+send "network domain\r"
+expect "cli->"
+send "network dns\r"
+expect "cli->"
+send "network\r"
+expect "cli->"
+
+# Sensors
+send "sensor\r"
+expect "cli->"
+send "sensor address\r"
+expect "cli->"
+
+# SNMP Details
+send "snmp\r"
+expect "cli->"
+send "snmp v1v2 access\r"
+expect "cli->"
+send "snmp v3 access\r"
+expect "cli->"
+send "snmp traps\r"
+expect "cli->"
+send "snmp v1v2 traps\r"
+expect "cli->"
+send "snmp v3 traps\r"
+expect "cli->"
+
+# Notifications
+send "notification\r"
+expect "cli->"
+
+# Controller Details
+send "time\r"
+expect "cli->"
+send "meminfo\r"
+expect "cli->"
+send "exit\r"
+
+# EOF
+expect eof
