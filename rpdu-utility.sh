@@ -38,7 +38,8 @@
 # Description:  Scripts to collect configuration and change configuration properties for the 
 #				Liebert(r) MPH2 & Avocent(r) MPX products.
 # Version:		0.2
-# Contributors:	scott.donaldson@vertiv.com, richard.hills@vertiv.com, mark.zagorski@vertiv.com
+# Contributors:	scott.donaldson@vertiv.com, richard.hills@vertiv.com, mark.zagorski@vertiv.com,
+#				philip.cotineau@vertiv.com
 # Usage:		n/a
 # Inputs:
 #	CFG_TARGETIP_FILE

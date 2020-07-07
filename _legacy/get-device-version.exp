@@ -1,0 +1,19 @@
+#!/usr/bin/expect 
+set ip [lindex $argv 0];
+
+log_user 0
+spawn ssh $ip
+#expect "login: "
+#send "admin\r"
+#expect "Password:"
+sleep 3
+expect "password:"
+send "admin\r"
+expect "SUCCESS"
+expect "cli-> "
+log_user 1
+send "system agent\r"
+expect "cli->"
+log_user 0
+send "exit\r"
+expect eof

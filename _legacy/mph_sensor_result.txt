@@ -1,0 +1,143 @@
+10.170.208.22
+spawn telnet 10.170.208.22
+telnet: can't connect to remote host (10.170.208.22): Connection refused
+10.170.208.71
+spawn telnet 10.170.208.71
+
+Entering character mode
+Escape character is '^]'.
+
+RPC2-551831G105C2016AUG160957 login: admin
+Password: 
+
+********************************************
+*            Vertiv RPC2 CLI               *
+*                                          *
+*     WARNING: Authorized Access Only      *
+********************************************
+*Type ? to view the Context Sensitive Help*
+*Type [Tab] to view command list*
+        
+Please Wait... Authorization is in progress
+Authorization SUCCESS
+Please Wait... Retrieving System Information
+Connection closed by foreign host
+10.170.208.75
+spawn telnet 10.170.208.75
+
+Entering character mode
+Escape character is '^]'.
+
+RPC2-551831G105C2016AUG161033 login: admin
+Password: 
+
+********************************************
+*            Vertiv RPC2 CLI               *
+*                                          *
+*     WARNING: Authorized Access Only      *
+********************************************
+*Type ? to view the Context Sensitive Help*
+*Type [Tab] to view command list*
+        
+Please Wait... Authorization is in progress
+Authorization SUCCESS
+Please Wait... Retrieving System Information
+
+cli-> [Js[Je[Jn[Js[Jo[Jr[J [Ja[Jd[Jd[Jr[Je[Js[Js[J
+
+Temperature Sensor Address
+-------------------
+[1]---(1) 3900000052708442 
+[1]---(2) 4B00000052927742 
+[1]---(4) 8C000000525AC342 
+
+Humidity Sensor Address
+-------------------
+[1]---(3) 6E00000201C54D26 
+[1]---(5) 8C00000201CA0626 
+[1]---(6) B8000002018EE326 
+
+cli-> [Je[Jx[Ji[Jt[J
+Connection closed by foreign host
+10.170.208.77
+spawn telnet 10.170.208.77
+
+Entering character mode
+Escape character is '^]'.
+
+RPC2-551831G105C2016AUG160970 login: admin
+Password: 
+
+********************************************
+*            Vertiv RPC2 CLI               *
+*                                          *
+*     WARNING: Authorized Access Only      *
+********************************************
+*Type ? to view the Context Sensitive Help*
+*Type [Tab] to view command list*
+        
+Please Wait... Authorization is in progress
+Authorization SUCCESS
+Please Wait... Retrieving System Information
+
+cli-> [Js[Je[Jn[Js[Jo[Jr[J [Ja[Jd[Jd[Jr[Je[Js[Js[J
+
+Temperature Sensor Address
+-------------------
+[1]---(1) 2D000000525C9D42 
+[1]---(2) 5E00000052480542 
+[1]---(5) E400000052C1B242 
+
+Humidity Sensor Address
+-------------------
+[1]---(3) 6800000201833826 
+[1]---(4) DD00000201930726 
+[1]---(6) F000000201A06826 
+
+cli-> [Je[Jx[Ji[Jt[J
+Connection closed by foreign host
+10.170.208.78
+spawn telnet 10.170.208.78
+
+Entering character mode
+Escape character is '^]'.
+
+RPC2-551831G105C2016AUG160282 login: admin
+Password: 
+
+********************************************
+*            Vertiv RPC2 CLI               *
+*                                          *
+*     WARNING: Authorized Access Only      *
+********************************************
+*Type ? to view the Context Sensitive Help*
+*Type [Tab] to view command list*
+        
+Please Wait... Authorization is in progress
+Authorization SUCCESS
+Please Wait... Retrieving System Information
+
+cli-> [Js[Je[Jn[Js[Jo[Jr[J [Ja[Jd[Jd[Jr[Je[Js[Js[J
+
+Temperature Sensor Address
+-------------------
+[1]---(3) C700000052C75B42 
+[1]---(4) C900000052415842 
+[1]---(5) D50000005247FC42 
+
+Humidity Sensor Address
+-------------------
+[1]---(1) 7D00000201B29826 
+[1]---(2) 8400000201A0AD26 
+[1]---(6) E500000201837326 
+
+cli-> [J10.170.208.79
+spawn telnet 10.170.208.79
+
+Entering character mode
+Escape character is '^]'.
+
+RPC2-551831G105C2016AUG161007 login: admin
+Password: 
+10.170.208.80
+spawn telnet 10.170.208.80

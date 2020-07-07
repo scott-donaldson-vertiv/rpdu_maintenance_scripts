@@ -1,0 +1,26 @@
+#!/usr/bin/expect 
+set ip [lindex $argv 0];
+set umg_ip [lindex $argv 1];
+
+#log_user 0
+spawn ssh $ip
+#expect "login: "
+#send "admin\r"
+#expect "Password:"
+sleep 3
+expect "password:"
+send "admin\r"
+expect "SUCCESS"
+expect "cli-> "
+send "notification all snmp_trap enable\r"
+expect "cli->"
+send "snmp v1v2 traps networkname 1 $umg_ip\r"
+expect "cli->"
+send "snmp v1v2 traps community 1 public\r"
+expect "cli->"
+send "reboot\r"
+expect "Proceed"
+send "Y\r"
+expect "cli->"
+send "exit\r"
+expect eof
