@@ -23,7 +23,7 @@ send "$env(RPC2_AUTH_PASS)\r"
 expect "SUCCESS"
 expect "cli-> "
 
-send "snmp v1v2 access community $env(RPC2_COMMUNITY_ENTRY) $env(RPC2_SNMP_COMMUNITY_RO)\r"
+send "snmp v1v2 access community $env(RPC2_COMMUNITY_ENTRY) $env(RPC2_SNMP_COMMUNITY)\r"
 expect "cli->"
 send "snmp v1v2 access mode $env(RPC2_COMMUNITY_ENTRY) $env(RPC2_SNMP_COMMUNITY_MODE)\r"
 expect "cli->"

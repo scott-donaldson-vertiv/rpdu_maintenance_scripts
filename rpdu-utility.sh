@@ -37,7 +37,7 @@
 # Title:		RPDU Utility
 # Description:  Scripts to collect configuration and change configuration properties for the 
 #				Liebert(r) MPH2 & Avocent(r) MPX products.
-# Version:		0.2
+# Version:		0.3
 # Contributors:	scott.donaldson@vertiv.com, richard.hills@vertiv.com, mark.zagorski@vertiv.com,
 #				philip.cotineau@vertiv.com
 # Usage:		n/a
@@ -45,7 +45,7 @@
 #	CFG_TARGETIP_FILE
 #
 
-VERSION=0.2
+VERSION=0.3
 CFG_FILE=./config/default.cfg
 CFG_SCRIPTSPATH=${0%/*}
 
@@ -126,6 +126,130 @@ function query_devices() {
 	echo "[`date "+%Y%m%d-%H%M%S"`] [Info]: Completed."  >> $CFG_LOG_DIR/debug.log
 }
 
+function set_snmp_trap_dest() {
+if [ -s $CFG_TARGETIP_FILE ]; then
+		readarray -t targets < $CFG_TARGETIP_FILE
+		echo "[`date "+%Y%m%d-%H%M%S"`] Debug: Source file $CFG_TARGETIP_FILE" >> $CFG_LOG_DIR/debug.log
+		echo "[`date "+%Y%m%d-%H%M%S"`] Debug: Procesed targets ${targets[*]}" >> $CFG_LOG_DIR/debug.log
+		echo "[`date "+%Y%m%d-%H%M%S"`] Debug: Total Targets ${#targets[@]}" >> $CFG_LOG_DIR/debug.log
+		total = ${#targets[@]}
+		count = 0
+		
+		if [ ! -x "$(command -v expect)" ]; then
+			dialog --clear
+			echo "[`date "+%Y%m%d-%H%M%S"`] [Error]: expect package is not installed, this is a pre-requisite." >> $CFG_LOG_DIR/debug.log
+			dialog --msgbox "Error: expect package is not installed." 10 40
+			exit 3
+		fi
+		
+		if [ ! -x "$CFG_PAYLOAD_DIR/rpc2/rpc2_snmp-v1v2c_create_trap.exp" ]; then
+			dialog --clear
+			echo "[`date "+%Y%m%d-%H%M%S"`] [Error]: Expect script rpc2_snmp-v1v2c_create_trap.exp is not permitted to execute." >> $CFG_LOG_DIR/debug.log
+			dialog --msgbox "Error: Expect script rpc2_snmp-v1v2c_create_trap.exp is not permitted to execute." 10 40
+			exit 4
+		fi
+		
+		export RPC2_AUTH_USERNAME
+		export RPC2_AUTH_PASS
+		export RPC2_TRAP_ENTRY
+		export RPC2_TRAP_COMMUNITY
+		export RPC2_TRAP_TGT_IPV4
+		export RPC2_TRAP_HEARTBEAT
+		export RPC2_TRAP_PORT
+		
+		if [ -x "$(command -v ping)" ]; then
+
+			echo $count | dialog --title "Set Trap Destination ( $total )" --gauge "Querying..." 10 70 0
+			for target in "${targets[@]}"
+			do
+				((count++))
+				echo "[`date "+%Y%m%d-%H%M%S"`] Info: Setting $target"  >> $CFG_LOG_DIR/debug.log
+				PCT=$((100*${count})/${total})
+				echo "[`date "+%Y%m%d-%H%M%S"`] Debug: Count $count" >> $CFG_LOG_DIR/debug.log
+				echo $PCT | dialog --title "Setting Devices ( $total )" --gauge "Querying $count..." 10 70 0
+				
+				ping -c 1 $target
+				PING_SUCCESS=$?
+				if [ $PING_SUCCESS -eq 0 ]; then 
+					$CFG_PAYLOAD_DIR/rpc2/rpc2_snmp-v1v2c_create_trap.exp $target | grep -v "cli->" > $CFG_OUTPUT/$target-create_trap_`date "+%Y%m%d-%H%M%S"`.log
+				fi
+				sleep 2
+			done
+			
+		else
+			cat EOF | dialog --gauge "Querying..." 10 70 0
+			dialog --clear
+			echo "[`date "+%Y%m%d-%H%M%S"`] [Error]: iputils package is not installed, this is a pre-requisite." >> $CFG_LOG_DIR/debug.log
+			dialog --msgbox "Error: iputils package is not installed." 10 40
+		fi
+
+	else
+		echo '[`date "+%Y%m%d-%H%M%S"`] [Error]: Target Devices Not Provided. File $CFG_TARGETIP_FILE does not exist.' >> $CFG_LOG_DIR/debug.log
+	fi
+	echo "[`date "+%Y%m%d-%H%M%S"`] [Info]: Completed."  >> $CFG_LOG_DIR/debug.log
+}
+
+function set_community() {
+	if [ -s $CFG_TARGETIP_FILE ]; then
+		readarray -t targets < $CFG_TARGETIP_FILE
+		echo "[`date "+%Y%m%d-%H%M%S"`] Debug: Source file $CFG_TARGETIP_FILE" >> $CFG_LOG_DIR/debug.log
+		echo "[`date "+%Y%m%d-%H%M%S"`] Debug: Procesed targets ${targets[*]}" >> $CFG_LOG_DIR/debug.log
+		echo "[`date "+%Y%m%d-%H%M%S"`] Debug: Total Targets ${#targets[@]}" >> $CFG_LOG_DIR/debug.log
+		total = ${#targets[@]}
+		count = 0
+		
+		if [ ! -x "$(command -v expect)" ]; then
+			dialog --clear
+			echo "[`date "+%Y%m%d-%H%M%S"`] [Error]: expect package is not installed, this is a pre-requisite." >> $CFG_LOG_DIR/debug.log
+			dialog --msgbox "Error: expect package is not installed." 10 40
+			exit 3
+		fi
+		
+		if [ ! -x "$CFG_PAYLOAD_DIR/rpc2/rpc2_snmp-v1v2c_create_community.exp" ]; then
+			dialog --clear
+			echo "[`date "+%Y%m%d-%H%M%S"`] [Error]: Expect script rpc2_snmp-v1v2c_create_community.exp is not permitted to execute." >> $CFG_LOG_DIR/debug.log
+			dialog --msgbox "Error: Expect script rpc2_snmp-v1v2c_create_community.exp is not permitted to execute." 10 40
+			exit 4
+		fi
+		
+		export RPC2_AUTH_USERNAME
+		export RPC2_AUTH_PASS
+		export RPC2_COMMUNITY_ENTRY
+		export RPC2_COMMUNITY_NETWORK
+		export RPC2_SNMP_COMMUNITY
+		export RPC2_SNMP_COMMUNITY_MODE
+		
+		if [ -x "$(command -v ping)" ]; then
+
+			echo $count | dialog --title "Set Community Devices ( $total )" --gauge "Querying..." 10 70 0
+			for target in "${targets[@]}"
+			do
+				((count++))
+				echo "[`date "+%Y%m%d-%H%M%S"`] Info: Setting $target"  >> $CFG_LOG_DIR/debug.log
+				PCT=$((100*${count})/${total})
+				echo "[`date "+%Y%m%d-%H%M%S"`] Debug: Count $count" >> $CFG_LOG_DIR/debug.log
+				echo $PCT | dialog --title "Setting Devices ( $total )" --gauge "Querying $count..." 10 70 0
+				
+				ping -c 1 $target
+				PING_SUCCESS=$?
+				if [ $PING_SUCCESS -eq 0 ]; then 
+					$CFG_PAYLOAD_DIR/rpc2/rpc2_snmp-v1v2c_create_community.exp $target | grep -v "cli->" > $CFG_OUTPUT/$target-create_community_`date "+%Y%m%d-%H%M%S"`.log
+				fi
+				sleep 2
+			done
+			
+		else
+			cat EOF | dialog --gauge "Querying..." 10 70 0
+			dialog --clear
+			echo "[`date "+%Y%m%d-%H%M%S"`] [Error]: iputils package is not installed, this is a pre-requisite." >> $CFG_LOG_DIR/debug.log
+			dialog --msgbox "Error: iputils package is not installed." 10 40
+		fi
+
+	else
+		echo '[`date "+%Y%m%d-%H%M%S"`] [Error]: Target Devices Not Provided. File $CFG_TARGETIP_FILE does not exist.' >> $CFG_LOG_DIR/debug.log
+	fi
+	echo "[`date "+%Y%m%d-%H%M%S"`] [Info]: Completed."  >> $CFG_LOG_DIR/debug.log
+}
 
 ##
 #  Menu
@@ -152,9 +276,11 @@ do
 			;;
 		3)
 			echo "Configure SNMP v1/v2 Access"
+			set_community
 			;;
 		4)
 			echo "Configure SNMP v1/v2 Traps"
+			set_snmp_trap_dest
 			;;
 		5)
 			echo "Configure Time"
